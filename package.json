@@ -1,0 +1,36 @@
+{
+  "dependencies": {
+    "pm2": "^3.5.1",
+    "pmx": "^1.6.7",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.4"
+  },
+  "devDependencies": {
+    "eslint": "^6.3.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2"
+  },
+  "name": "dpl",
+  "version": "0.0.1",
+  "description": "A PM2 module which outputs PM2 logs to Discord",
+  "main": "index.js",
+  "repository": "https://github.com/bsian03/discord-pm2-logs.git",
+  "author": "Bsian <bsian@staff.libraryofcode.us>",
+  "license": "MIT",
+  "config": {
+    "webhook": null,
+    "rate": 2,
+    "queueMax": 100,
+    "exception": false,
+    "error": true,
+    "log": true,
+    "kill": false,
+    "restart": false,
+    "delete": false,
+    "stop": false,
+    "restartLimit": false,
+    "exit": false,
+    "start": false,
+    "online": false
+  }
+}
