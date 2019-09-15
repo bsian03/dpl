@@ -14,7 +14,7 @@
   "version": "0.0.1",
   "description": "A PM2 module which outputs PM2 logs to Discord",
   "main": "index.js",
-  "repository": "https://github.com/bsian03/discord-pm2-logs.git",
+  "repository": "https://github.com/bsian03/dpl.git",
   "author": "Bsian <bsian@staff.libraryofcode.us>",
   "license": "MIT",
   "config": {
