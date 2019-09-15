@@ -14,9 +14,6 @@ class PM2Listener {
     constructor() {
         // Core
         this.name = 'dpl';
-        this.webhook = config.webhook;
-        this.rate = (config.rate > 0 && config.rate <= 300) ? config.rate : 2;
-        this.queueMax = config.queueMax >= 10 ? config.queueMax : 100;
         // Options
         this.exception = typeof config.exception === 'boolean' ? config.exception : false;
         this.error = typeof config.error === 'boolean' ? config.error : true;

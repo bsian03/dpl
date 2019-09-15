@@ -1,12 +1,15 @@
 require('request');
 const request = require('request-promise');
-const Listener = require('./pm2-listener');
+const pmx = require('pmx');
+
+const config = pmx.initModule();
 
 class Sender {
     constructor() {
         this.queue = [];
-        this.rate = Listener.rate;
+        this.rate = config.rate;
         this.limiter = [];
+        this.webhook = config.webhook;
     }
 
     /**
@@ -19,7 +22,7 @@ class Sender {
             if (!this.queue.length) return;
             try {
                 await request({
-                    method: 'POST', uri: Listener.webhook, body: { content: this.queue[0] }, json: true, resolveWithFullResponse: true,
+                    method: 'POST', uri: this.webhook, body: { content: this.queue[0] }, json: true, resolveWithFullResponse: true,
                 });
             } catch (error) {
                 let errorMessage = `${error.statusCode} ${error.name}: ${error.error.code} - ${error.error.message}`;
@@ -30,12 +33,14 @@ class Sender {
                     errorMessage += '\nPlease try again with another webhook'
                 + '\nFor more info regarding webhooks, please see https://support.discordapp.com/hc/en-us/articles/228383668-Intro-to-Webhooks';
                 }
+                const code = error.statusCode.toString()
+                if (code !== '429' && (code.startsWith('4') || code.startsWith('5'))) this.limiter.push(Date.now())
                 console.error(errorMessage);
                 return;
             }
             this.queue = this.queue.slice(1);
             this.limiter.push(Date.now());
-        }, this.rate);
+        }, this.rate * 1000);
     }
 
     /**
