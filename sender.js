@@ -18,6 +18,10 @@ class Sender {
     async run() {
         this.startRatelimit();
         setInterval(async () => {
+            console.log(this.limiter.length);
+            console.log(this.limiter);
+            console.log(this.queue.length);
+            console.log(this.queue);
             if (this.limiter.length >= 30) return;
             if (!this.queue.length) return;
             try {
@@ -25,7 +29,9 @@ class Sender {
                     method: 'POST', uri: this.webhook, body: { content: this.queue[0] }, json: true, resolveWithFullResponse: true,
                 });
             } catch (error) {
-                let errorMessage = `${error.statusCode} ${error.name}: ${error.error.code} - ${error.error.message}`;
+                console.error(error);
+                if (error.statusCode !== 429) this.limiter.push(Date.now());
+                let errorMessage = `${error.response.statusCode} ${error.response.statusMessage}: ${error.error.code || error.statusCode} - ${error.error.message}`;
                 if (error.statusCode === 429) errorMessage += '\nRate limits are not working, please open an issue at https://github.com/bsian03/discord-pm2-logs';
                 else if (error.statusCode === 401
                     || error.statusCode === 403
@@ -33,8 +39,6 @@ class Sender {
                     errorMessage += '\nPlease try again with another webhook'
                 + '\nFor more info regarding webhooks, please see https://support.discordapp.com/hc/en-us/articles/228383668-Intro-to-Webhooks';
                 }
-                const code = error.statusCode.toString()
-                if (code !== '429' && (code.startsWith('4') || code.startsWith('5'))) this.limiter.push(Date.now())
                 console.error(errorMessage);
                 return;
             }

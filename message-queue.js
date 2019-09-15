@@ -51,6 +51,7 @@ class MessageQueue {
             const joined = this.cache.join('\n');
             this.cache = [];
             const clean = joined.replace(/\n```\n```js\n|\n```\n\n```js\n/g, '\n');
+            if (!clean) return;
             if (clean.length > 1900) this.split(clean).forEach((m) => Sender.addToQueue(m));
             else Sender.addToQueue(clean);
         }, this.rate * 1000);
