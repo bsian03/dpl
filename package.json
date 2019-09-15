@@ -21,7 +21,7 @@
     "webhook": null,
     "rate": 2,
     "queueMax": 100,
-    "exception": false,
+    "exception": true,
     "error": true,
     "log": true,
     "kill": false,
