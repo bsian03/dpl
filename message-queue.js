@@ -52,8 +52,19 @@ class MessageQueue {
             this.cache = [];
             const clean = joined.replace(/\n```\n```js\n|\n```\n\n```js\n/g, '\n');
             if (!clean) return;
-            if (clean.length > 1900) this.split(clean).forEach((m) => Sender.addToQueue(m));
-            else Sender.addToQueue(clean);
+            if (clean.length > 1900) {
+                const split = this.split(clean);
+                let isCode = false;
+                split.forEach((m) => {
+                    if (isCode) m = `\`\`\`js\n${m}`;
+                    if ((m.match(/```js\n/g) || []).length > (m.match(/\n```/g) || []).length) {
+                        isCode = true;
+                        m = `${m}\n\`\`\``;
+                    }
+                    if (isCode && (m.match(/```js\n/g) || []).length <= (m.match(/\n```/g) || []).length) isCode = false;
+                    Sender.addToQueue(m);
+                });
+            } else Sender.addToQueue(clean);
         }, this.rate * 1000);
     }
 }
