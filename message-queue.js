@@ -54,7 +54,7 @@ class MessageQueue {
             if (!clean) return;
             if (clean.length > 1900) {
                 const split = this.split(clean);
-                let isCode = false;
+                let isCode;
                 split.forEach((m) => {
                     console.log(isCode);
                     if (isCode) m = `\`\`\`js\n${m}`;
