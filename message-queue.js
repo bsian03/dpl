@@ -54,8 +54,9 @@ class MessageQueue {
             if (!clean) return;
             if (clean.length > 1900) {
                 const split = this.split(clean);
-                let isCode;
-                split.forEach((m) => {
+                let isCode = false;
+                // eslint-disable-next-line no-restricted-syntax
+                for (let m of split) {
                     console.log(isCode);
                     if (isCode) m = `\`\`\`js\n${m}`;
                     if ((m.match(/```js\n/g) || []).length > (m.match(/\n```/g) || []).length) {
@@ -65,7 +66,7 @@ class MessageQueue {
                     }
                     if (isCode && (m.match(/```js\n/g) || []).length <= (m.match(/\n```/g) || []).length) isCode = false;
                     Sender.addToQueue(m);
-                });
+                }
             } else Sender.addToQueue(clean);
         }, this.rate * 1000);
     }
