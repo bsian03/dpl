@@ -56,6 +56,7 @@ class MessageQueue {
                 const split = this.split(clean);
                 let isCode = false;
                 split.forEach((m) => {
+                    console.log(isCode);
                     if (isCode) m = `\`\`\`js\n${m}`;
                     if ((m.match(/```js\n/g) || []).length > (m.match(/\n```/g) || []).length) {
                         isCode = true;

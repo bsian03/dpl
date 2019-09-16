@@ -18,10 +18,6 @@ class Sender {
     async run() {
         this.startRatelimit();
         setInterval(async () => {
-            console.log(this.limiter.length);
-            console.log(this.limiter);
-            console.log(this.queue.length);
-            console.log(this.queue);
             if (this.limiter.length >= 30) return;
             if (!this.queue.length) return;
             try {
