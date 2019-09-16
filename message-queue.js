@@ -10,6 +10,7 @@ class MessageQueue {
         this.maxMsgLength = 1900;
         this.rate = config.rate;
         this.queueMax = config.queueMax >= 10 ? config.queueMax : 100;
+        this.isCode = false;
     }
 
     /**
@@ -54,19 +55,17 @@ class MessageQueue {
             if (!clean) return;
             if (clean.length > 1900) {
                 const split = this.split(clean);
-                let isCode = false;
-                // eslint-disable-next-line no-restricted-syntax
-                for (let m of split) {
-                    console.log(isCode);
-                    if (isCode) m = `\`\`\`js\n${m}`;
+                split.forEach((m) => {
+                    console.log(this.isCode);
+                    if (this.isCode) m = `\`\`\`js\n${m}`;
                     if ((m.match(/```js\n/g) || []).length > (m.match(/\n```/g) || []).length) {
-                        isCode = true;
+                        this.isCode = true;
                         console.log(isCode);
                         m = `${m}\n\`\`\``;
                     }
-                    if (isCode && (m.match(/```js\n/g) || []).length <= (m.match(/\n```/g) || []).length) isCode = false;
+                    if (this.isCode && (m.match(/```js\n/g) || []).length <= (m.match(/\n```/g) || []).length) this.isCode = false;
                     Sender.addToQueue(m);
-                }
+                });
             } else Sender.addToQueue(clean);
         }, this.rate * 1000);
     }
