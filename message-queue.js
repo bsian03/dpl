@@ -56,12 +56,10 @@ class MessageQueue {
             if (clean.length > 1900) {
                 const split = this.split(clean);
                 split.forEach((m) => {
-                    console.log(this.isCode);
                     if (this.isCode) m = `\`\`\`js\n${m}`;
                     if (this.isCode && (m.match(/```js\n/g) || []).length <= (m.match(/\n```/g) || []).length) this.isCode = false;
                     if ((m.match(/```js\n/g) || []).length > (m.match(/\n```/g) || []).length) {
                         this.isCode = true;
-                        console.log(this.isCode);
                         m = `${m}\n\`\`\``;
                     }
                     Sender.addToQueue(m);
