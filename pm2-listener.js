@@ -68,9 +68,7 @@ class PM2Listener {
             bus.on('process:event', (data) => {
                 if (this.isSelf(data)) return;
                 if (!this[data.event]) return;
-                console.log(data.process);
-                console.log(data.process.ENV);
-                const message = `Event occured on ${data.process.name} [${data.process.env.ID}]: ${data.event}`;
+                const message = `Event occured on ${data.process.name} [${data.process.pm_id}]: ${data.event}`;
                 this.addToQueue(message);
             });
         });
