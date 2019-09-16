@@ -60,7 +60,7 @@ class MessageQueue {
                     if (this.isCode) m = `\`\`\`js\n${m}`;
                     if ((m.match(/```js\n/g) || []).length > (m.match(/\n```/g) || []).length) {
                         this.isCode = true;
-                        console.log(isCode);
+                        console.log(this.isCode);
                         m = `${m}\n\`\`\``;
                     }
                     if (this.isCode && (m.match(/```js\n/g) || []).length <= (m.match(/\n```/g) || []).length) this.isCode = false;
